@@ -1,12 +1,11 @@
-const Sequelize = require('sequelize');
-module.exports = new Sequelize('shopphukien', 'root', '123456', {
-    host: 'localhost',
-    dialect: 'mysql',
-    operatorsAliases: false,
-    pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000
-    }
+const { createPool }= require('mysql');
+
+const pool = createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    connectionlimit: 10,
 });
+
+module.exports = pool

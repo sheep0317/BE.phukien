@@ -1,28 +1,13 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
-
-//Database Connection
-const db =require('./config/database');
-
-//Database Testing
-db.authenticate()
-    .then(() => {
-        console.log('Kết nối thành công!');
-    })
-    .catch(err => {
-        console.log('Lỗi kết nối:', err);
-    });
+require('dotenv').config();
 const app = express();
+const userRouter = require('./api/user/user.router');
+const productRouter = require('./api/product/product.router');
+app.use(express.json());
 
-//Routers
-app.get('/', (req, res) => {
-  res.send("Index");
-});
+app.use("/api/user", userRouter);
+app.use("/api/products", productRouter);
 
-app.use('/products',require('./routes/products'));
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.listen(process.env.APP_PORT, () => {
+  console.log('Server running on port 3000');
 });
