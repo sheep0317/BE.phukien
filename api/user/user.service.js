@@ -12,7 +12,7 @@ module.exports = {
                 data.address,
                 data.gender,
                 data.phone,
-                data.role 
+                1
             ],
             (error, result, field) => {
                 if (error){
@@ -74,5 +74,5 @@ module.exports = {
                 return callBack(null, results[0])
             }
         )
-    }
+    },
 }
