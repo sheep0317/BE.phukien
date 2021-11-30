@@ -3,11 +3,11 @@ const { create,
       getUsers, 
       deleteUser, 
       updateUser, 
-      changePassword} 
+      updatePassword} 
 = require("./user.service")
 require("dotenv").config()
 const {genSaltSync, hashSync, compareSync} = require('bcrypt');
-const {sign} = require('jsonwebtoken');
+const {sign, verify} = require('jsonwebtoken');
 module.exports = {
     userRegister: (req, res) => {
         const body = req.body
@@ -15,7 +15,12 @@ module.exports = {
         body.password = hashSync(body.password, salt)
         create(body, (err, results) => {
             if (err) {
-                console.log(err)
+                if (err.errno == 1062) {
+                    return res.status(400).json({
+                        success: 0,
+                        message: "Email already exists"
+                    })
+                }
                 return res.status(500).json({
                     success: 0,
                     message: "Database connection error"
@@ -150,7 +155,7 @@ module.exports = {
             }
             const salt = genSaltSync(10)
             body.password = hashSync(body.password, salt)
-            updateUser(body, (err, results) => {
+            updatePassword(body, (err, results) => {
                 if (err) {
                     console.log(err)
                     return res.status(500).json({
@@ -182,18 +187,50 @@ module.exports = {
                     message: "User not found"
                 })
             }
-            const SECRET_KEY = process.env.SECRET_KEY + results.password
+            const SECRET_KEY = 'thisIsResetPassword'
             const payload = {
                 email: results.email,
             }
+            const FEdomain = `http://localhost:4200/reset-password`
             const token = sign(payload, SECRET_KEY, { expiresIn: '15m' })
-            const link = `http://localhost:3000/reset-password/${token}`
+            const link = FEdomain + `/${token}`
             console.log(link)
             return res.status(200).json({
                 success: 1,
                 message: "Reset password link sent",
             })
         })   
+    },
+    resetPassword: (req, res) => {
+        const body = req.body;
+        let token = body.token
+        console.log(token)
+        const SECRET_KEY = 'thisIsResetPassword'
+        verify(token, SECRET_KEY, (err, decoded) => {
+            if (err) {
+                console.log(err)
+                return res.status(400).json({
+                    success: 0,
+                    message: "Invalid token"
+                })
+            }
+            const salt = genSaltSync(10)
+            body.password = hashSync(body.password, salt)
+            updatePassword(body, (err, results) => {
+                if (err) {
+                    console.log(err)
+                    return res.status(500).json({
+                        success: 0,
+                        message: "Database connection error"
+                    })
+                }
+                return res.status(200).json({
+                    success: 1,
+                    message: "Password changed"
+                })
+            })
+        })
+
     }
     
 }

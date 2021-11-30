@@ -75,4 +75,19 @@ module.exports = {
             }
         )
     },
+    updatePassword: (data, callBack) => {
+        pool.query(
+            `UPDATE users SET password = ? where email = ?`,
+            [
+                data.password,
+                data.email
+            ],
+            (error, results, fields) =>{
+                if (error){
+                    return callBack(error)
+                }
+                return callBack(null, results[0])
+            }
+        )
+    }
 }
