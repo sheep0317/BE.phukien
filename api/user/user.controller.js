@@ -28,7 +28,6 @@ module.exports = {
             }
             return res.status(200).json({
                 success: 1,
-                data: results
             })
         })
     },
@@ -123,11 +122,14 @@ module.exports = {
                     message: "Wrong password"
                 })
             }
-            const token = sign({role: results.role}, process.env.SECRET_KEY, { expiresIn: '1h' })
+            console.log(results)
+            const token = sign({email: results.email, role: results.role}, process.env.SECRET_KEY, { expiresIn: '1h' })
             return res.status(200).json({
                 success: 1,
                 message: "Login success",
-                token: token
+                token: token,
+                role: results.role,
+                displayName: results.displayname
             })
         })
     },
@@ -204,7 +206,6 @@ module.exports = {
     resetPassword: (req, res) => {
         const body = req.body;
         let token = body.token
-        console.log(token)
         const SECRET_KEY = 'thisIsResetPassword'
         verify(token, SECRET_KEY, (err, decoded) => {
             if (err) {
@@ -214,6 +215,7 @@ module.exports = {
                     message: "Invalid token"
                 })
             }
+            body.email = decoded.email
             const salt = genSaltSync(10)
             body.password = hashSync(body.password, salt)
             updatePassword(body, (err, results) => {

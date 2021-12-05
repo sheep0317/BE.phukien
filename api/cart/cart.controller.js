@@ -11,7 +11,7 @@ const {
 
 module.exports = {
     getCart: (req, res) => {
-        const email = req.params.email
+        const email = req.body.email
         var cart = {
             user_email: email,
             cart: [

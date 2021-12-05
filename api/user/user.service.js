@@ -76,6 +76,7 @@ module.exports = {
         )
     },
     updatePassword: (data, callBack) => {
+        console.log(data)
         pool.query(
             `UPDATE users SET password = ? where email = ?`,
             [

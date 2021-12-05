@@ -6,7 +6,7 @@ const { getCart,
     } = require("./cart.controller")
 const { checkTokenUser }= require('./../../authentication/token_validation')
 
-router.get("/:email",checkTokenUser, getCart)
+router.get("/",checkTokenUser, getCart)
 router.post("/", checkTokenUser, addToCart)
 router.delete("/", checkTokenUser, deleteCart)
 router.put("/", checkTokenUser, updateCart)
