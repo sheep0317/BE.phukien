@@ -103,21 +103,6 @@ module.exports = {
             }
         )
     },
-    cancelBill: (bill_id, callBack) => {
-        pool.query(
-            `UPDATE bill SET paid_date = ? WHERE bill_id = ?`,
-            [
-                'cancel',
-                bill_id
-            ],
-            (err, result) => {
-                if (err) {
-                    return callBack(err)
-                }
-                return callBack(null, result)
-            }
-        )
-    },
     getStat: (callBack) => {
         pool.query(
             `SELECT total, paid_date FROM bill`,

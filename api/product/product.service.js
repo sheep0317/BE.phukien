@@ -20,6 +20,30 @@ module.exports = {
             return callBack(null, result[0])
         })
     },
+    updateProuctQuantity: (id, quantity, callBack) => {
+        pool.query(
+            `UPDATE products SET product_quantity = ? WHERE productid = ?`,
+            [quantity, id],
+            (err, result) => {
+                if (err) {
+                    return callBack(err)
+                }
+                return callBack(null, result)
+            }
+        )
+    },
+    getProductQuantity: (id, callBack) => {
+        pool.query(
+            `SELECT product_quantity FROM products WHERE productid = ?`,
+            [id],
+            (err, result) => {
+                if (err) {
+                    return callBack(err)
+                }
+                return callBack(null, result[0])
+            }
+        )
+    },
     deleteProduct: (id, callBack) => {
         pool.query(
             `DELETE FROM products WHERE productid = ?`,
@@ -86,24 +110,15 @@ module.exports = {
         }
         pool.query(
             `   UPDATE products 
-                SET product_name = ?, 
-                product_description = ?, 
+                SET 
                 product_price = ?, 
                 product_quantity = ?, 
                 product_status = ?, 
-                product_type = ?, 
-                product_brand = ?, 
-                product_image = ?
                 WHERE productid = ?`,
                 [
-                    data.product_name,
-                    data.product_description,
                     data.product_price,
                     data.product_quantity,
                     product_status,
-                    data.product_type,
-                    data.product_brand,
-                    data.product_image,
                     id
                 ],
             (err, result) => {

@@ -1,23 +1,27 @@
 const { userRegister, 
         updateUser, 
-        getUsers, 
+        getAllUsers, 
         deleteUser,
         login,
         changePassword,
         forgetPassword,
         resetPassword,
+        getUserByEmail,
     } = require("./user.controller");
 const router = require("express").Router()
 const {checkTokenAdmin,
-checkTokenUser }= require('./../../authentication/token_validation')
+checkTokenUser,
+checkToken }= require('./../../authentication/token_validation')
 
 
 router.post("/register", userRegister);
-router.get("/all",checkTokenAdmin, getUsers);
+router.get("/all",checkTokenAdmin, getAllUsers);
+router.post("/get",checkToken, getUserByEmail);
 router.post("/delete", checkTokenAdmin,deleteUser);
 router.post("/update", checkTokenAdmin, updateUser);
 router.post("/login",login );
-router.post("/changePassword",checkTokenUser,changePassword);
+router.post("/changePassword",checkToken,changePassword);
 router.post("/forgetPassword",forgetPassword);
 router.post("/resetPassword",resetPassword);
+
 module.exports = router;

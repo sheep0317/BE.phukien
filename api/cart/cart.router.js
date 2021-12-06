@@ -2,13 +2,13 @@ const router = require("express").Router()
 const { getCart,
         addToCart,
         deleteCart,
-        updateCart
+        updateCart,
     } = require("./cart.controller")
-const { checkTokenUser }= require('./../../authentication/token_validation')
+const { checkTokenUser, checkToken }= require('./../../authentication/token_validation')
 
-router.get("/",checkTokenUser, getCart)
-router.post("/", checkTokenUser, addToCart)
-router.delete("/", checkTokenUser, deleteCart)
-router.put("/", checkTokenUser, updateCart)
+router.post("/getCart",checkToken, getCart)
+router.post("/", checkToken, addToCart)
+router.post("/delete", checkToken, deleteCart)
+router.post("/update", checkTokenUser, updateCart)
 
 module.exports = router

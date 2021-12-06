@@ -1,6 +1,6 @@
 const { create,
      getUserByEmail,
-      getUsers, 
+      getAllUsers, 
       deleteUser, 
       updateUser, 
       updatePassword} 
@@ -32,7 +32,7 @@ module.exports = {
         })
     },
     getUserByEmail: (req, res) => {
-        const email = req.params.email
+        const email = req.body.email
         getUserByEmail(email, (err, results) => {
             if (err) {
                 console.log(err)
@@ -53,8 +53,8 @@ module.exports = {
             })
         })
     },
-    getUsers: (req, res) => {
-        getUsers((err, results) => {
+    getAllUsers: (req, res) => {
+        getAllUsers((err, results) => {
             if (err) {
                 console.log(err)
                 return res.status(500).json({

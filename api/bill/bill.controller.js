@@ -6,10 +6,10 @@ const {
     getBillByCustomerEmail,
     deleteBill,
     getAllBillId,
-    cancelBill,
     getStat
 } = require('./bill.service')
-
+const {clearCart} = require('../cart/cart.service')
+const { updateProuctQuantity, getProductQuantity } = require('../product/product.service')
 module.exports = {
     createBill: (req, res) => {
         const email = req.body.email
@@ -23,14 +23,45 @@ module.exports = {
             } else {
                 const bill_id = results
                 products.forEach(product => {
-                    createBill(email, bill_id, product, date, (err, results) => {
-                        if (err) {
-                            res.status(500).json({
-                                message: "Error when creating bill",
-                                error: err
-                            })
-                        }
-                    })
+                    if (product != null) {
+                        createBill(email, bill_id, product, date, (err, results) => {
+                            if (err) {
+                                res.status(500).json({
+                                    message: "Error when creating bill",
+                                    error: err
+                                })
+                            }
+                        })
+                        // get current product quantity
+                        getProductQuantity(product.product_id.toString(), (err, results) => {
+                            if (err) {
+                                res.status(500).json({
+                                    message: "Error when getting product quantity",
+                                    error: err
+                                })
+                            } else {
+                                var updatedQuantity = parseInt(results.product_quantity) - parseInt(product.product_quantity)
+                                updateProuctQuantity(product.product_id, updatedQuantity, (err, results) => {
+                                    if (err) {
+                                        res.status(500).json({
+                                            message: "Error when updating product quantity",
+                                            error: err
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                        
+                    }
+                })
+                
+                clearCart(email, (err, results) => {
+                    if (err) {
+                        res.status(500).json({
+                            message: "Error when clearing cart",
+                            error: err
+                        })
+                    }
                 })
                 res.status(200).json({
                     message: "Bill created successfully"
@@ -130,6 +161,55 @@ module.exports = {
     },
     deleteBill: (req, res) => {
         const bill_id = req.params.id
+        var quantity_return = [];
+        var current_quantity = [];
+        getBillById(bill_id, (err, results) => {
+            if (err) {
+                res.status(500).send({
+                    message: "Internal server error"
+                })
+            } else {
+                //get product quantity in bill
+                results.forEach(element => {
+                    quantity_return.push({
+                        product_id: element.product_id,
+                        product_quantity: element.product_quantity
+                    })
+                })
+                console.log('quantity_return')
+                console.log(quantity_return)
+                //get current quantity
+                quantity_return.forEach(element => {
+                    getProductQuantity(element.product_id, (err, results) => {
+                        if (err) {
+                            res.status(500).send({
+                                message: "Internal server error"
+                            })
+                        } else {
+                            current_quantity.push({
+                                product_id: element.product_id,
+                                product_quantity: parseInt(results.product_quantity) 
+                            })
+                // return quantity for product
+                            quantity_return.forEach(element => {
+                                current_quantity.forEach(element2 => {
+                                    if (element.product_id == element2.product_id) {
+                                        var quantity = element2.product_quantity + element.product_quantity
+                                        updateProuctQuantity(element.product_id, quantity, (err, results) => {
+                                            if (err) {
+                                                res.status(500).send({
+                                                    message: "Internal server error"
+                                                })
+                                            }
+                                        })
+                                    }
+                                })
+                            })
+                        }
+                    })
+                })
+            }
+        })
         deleteBill(bill_id, (err, results) => {
             if (err) {
                 res.status(500).send({
@@ -142,20 +222,7 @@ module.exports = {
             }
         })
     },
-    cancelBill: (req, res) => {
-        const bill_id = req.params.id
-        cancelBill(bill_id, (err, results) => {
-            if (err) {
-                res.status(500).send({
-                    message: "Internal server error"
-                })
-            } else {
-                res.status(200).json({
-                    message: "Cancel bill successfully"
-                })
-            }
-        })
-    },
+  
     getBillByCustomerEmail: (req, res) => {
         const email = req.params.email
         getBillByCustomerEmail(email, (err, results) => {

@@ -22,7 +22,7 @@ module.exports = {
             }
         )
     },
-    getUsers: (callBack) => {
+    getAllUsers: (callBack) => {
         pool.query(
             `SELECT * FROM users`,
             (error, result, field) => {
@@ -76,7 +76,6 @@ module.exports = {
         )
     },
     updatePassword: (data, callBack) => {
-        console.log(data)
         pool.query(
             `UPDATE users SET password = ? where email = ?`,
             [

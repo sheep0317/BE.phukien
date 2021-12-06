@@ -16,7 +16,7 @@ module.exports = {
         pool.query(
             `INSERT INTO user_cart values (?, ?, ?)`,
             [
-                data.user_email, 
+                data.email, 
                 data.product_id, 
                 data.product_quantity
             ],
@@ -32,7 +32,7 @@ module.exports = {
             `UPDATE user_cart SET quantity = ? WHERE user_email = ? AND product_id = ?`,
             [
                 data.product_quantity, 
-                data.user_email, 
+                data.email, 
                 data.product_id
             ],
             (err, results) => {
@@ -46,9 +46,20 @@ module.exports = {
         pool.query(
             `DELETE FROM user_cart WHERE user_email = ? AND product_id = ?`,
             [
-                data.user_email, 
+                data.email, 
                 data.product_id
             ],
+            (err, results) => {
+            if (err) {
+                return callBack(err)
+            }
+            return callBack(null, results)
+        })
+    },
+    clearCart: (email, callBack) => {
+        pool.query(
+            `DELETE FROM user_cart WHERE user_email = ?`,
+            [email],
             (err, results) => {
             if (err) {
                 return callBack(err)

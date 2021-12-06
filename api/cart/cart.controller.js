@@ -2,7 +2,8 @@ const {
     getCart,
     addToCart,
     deleteCart,
-    updateCart
+    updateCart,
+    clearCart
 } = require('./cart.service')
 
 const {
@@ -10,10 +11,10 @@ const {
 } = require('../product/product.service')
 
 module.exports = {
-    getCart: (req, res) => {
-        const email = req.body.email
+    getCart: (req, res) => { 
+        const email = req.body.email   
         var cart = {
-            user_email: email,
+            email: email,
             cart: [
             ]
         }
@@ -23,7 +24,6 @@ module.exports = {
                     message: "Internal server error"
                 })
             } else {
-                console.log(results)
                 if (results.length) {
                     results.forEach(element => {
                         getProductById(element.product_id, (err, result) => {
@@ -36,6 +36,8 @@ module.exports = {
                                     product_id: element.product_id,
                                     product_quantity: element.quantity,
                                     product_name: result.product_name,
+                                    product_price: result.product_price,
+                                    product_image: result.product_image
                                 })
                                 if (cart.cart.length === results.length) {
                                     res.status(200).send(cart)
@@ -147,5 +149,20 @@ module.exports = {
             }
         })
     },
-    
+    clearCart: (req, res) => {
+        const email = req.body.email
+        clearCart(email, (err, results) => {
+            if (err) {
+                res.status(500).send({
+                    message: "Internal server error"
+                })
+            } else {
+                res.send({
+                    status: 200,
+                    message: "Cart cleared"
+                })
+            }
+        })
+    }
+
 }
