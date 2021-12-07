@@ -108,12 +108,13 @@ module.exports = {
         if (data.product_quantity > 0) {
             product_status = 1;
         }
+        id = parseInt(id);
         pool.query(
             `   UPDATE products 
                 SET 
                 product_price = ?, 
                 product_quantity = ?, 
-                product_status = ?, 
+                product_status = ?
                 WHERE productid = ?`,
                 [
                     data.product_price,

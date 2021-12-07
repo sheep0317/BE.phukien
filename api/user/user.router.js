@@ -18,7 +18,7 @@ router.post("/register", userRegister);
 router.get("/all",checkTokenAdmin, getAllUsers);
 router.post("/get",checkToken, getUserByEmail);
 router.post("/delete", checkTokenAdmin,deleteUser);
-router.post("/update", checkTokenAdmin, updateUser);
+router.post("/update", checkToken, updateUser);
 router.post("/login",login );
 router.post("/changePassword",checkToken,changePassword);
 router.post("/forgetPassword",forgetPassword);

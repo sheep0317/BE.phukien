@@ -113,7 +113,7 @@ module.exports = {
         })
     },
     getBillById: (req, res) => {
-        const bill_id = req.params.id
+        const bill_id = req.body.id
         getBillById(bill_id, (err, results) => {
             if (err) {
                 res.status(500).send({
@@ -143,7 +143,7 @@ module.exports = {
         })
     },
     updateBill: (req, res) => {
-        const bill_id = req.params.id
+        const bill_id = req.body.id
         const data = req.body
         console.log(data)
         console.log(bill_id)
@@ -224,26 +224,34 @@ module.exports = {
     },
   
     getBillByCustomerEmail: (req, res) => {
-        const email = req.params.email
+        const email = req.body.email
         getBillByCustomerEmail(email, (err, results) => {
             if (err) {
                 res.status(500).send({
                     message: "Internal server error"
                 })
             } else {
-                var bill = {
-                    id: results[0].bill_id,
-                    email: results[0].email,
-                    createDate: results[0].create_date,
-                    paidDate: results[0].paid_date,
-                    products: []
-                }
+                console.log(results)
+                var bill = []
                 results.forEach(element => {
-                    bill.products.push({
-                        product_id: element.product_id,
-                        product_name: element.product_name,
-                        product_quantity: element.product_quantity,
-                        total: element.total
+                    bill.push({
+                        id: element.bill_id,
+                        email: element.email,
+                        createDate: element.create_date,
+                        paidDate: element.paid_date,
+                        products: []
+                    })
+                })
+                results.forEach(element => {
+                    bill.forEach(element2 => {
+                        if (element.bill_id == element2.id) {
+                            element2.products.push({
+                                product_id: element.product_id,
+                                product_name: element.product_name,
+                                product_quantity: element.product_quantity,
+                                total: element.total
+                            })
+                        }
                     })
                 })
                 res.status(200).json({

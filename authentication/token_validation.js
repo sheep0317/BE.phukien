@@ -15,8 +15,7 @@ module.exports = {
                         message: 'Invalid token'
                     });
                 }
-                req.decoded = decoded;
-                if(decoded.result.role === 0){
+                if(decoded.role === 0){
                     next();
                 }
                 else{
