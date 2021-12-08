@@ -84,6 +84,7 @@ module.exports = {
                                 message: "Internal server error"
                             })
                         } else {
+                            console.log(kq)
                             var bill = {
                                 id: kq[0].bill_id,
                                 email: kq[0].email,
