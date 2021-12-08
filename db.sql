@@ -104,7 +104,7 @@ CREATE TABLE `user_cart` (
 
 LOCK TABLES `user_cart` WRITE;
 /*!40000 ALTER TABLE `user_cart` DISABLE KEYS */;
-INSERT INTO `user_cart` VALUES ('chaos.wizard@gmail.com',1,3),('chaos.wizard@gmail.com',2,1),('chaos.wizard@gmail.com',5,1),('chaos.wizard@gmail.com',6,2),('tranvietmar15@gmail.com',3,1);
+INSERT INTO `user_cart` VALUES ('chaos.wizard@gmail.com',1,3),('chaos.wizard@gmail.com',2,1),('chaos.wizard@gmail.com',4,1),('chaos.wizard@gmail.com',5,1),('chaos.wizard@gmail.com',6,2),('chaos.wizard@gmail.com',8,1),('tranvietmar15@gmail.com',3,1);
 /*!40000 ALTER TABLE `user_cart` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -133,7 +133,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES ('chao@gmail.com','phuonga','$2b$10$aQOj4fC2OxzZKvEohduZHu1DG.2.m5eeJKb0stg1BTb5EuYsifazm','alsdsnahl',0,'1234567890',1),('chaos.15@gmail.com','phuonganh','$2b$10$fX41ERi.Qze1QCgeE8mOieT5Ml.GY6xXky7CE218Ldi3MOI3FZI9K','51 duong 6',0,'123456789',1),('chaos.wizard.15@gmail.com','admin02','$2b$10$TrADd/DV2fnX/IS5oRawOOGkrXk2jbm9LoVbku1Sxvd1PBOK0kq12','51 duong 6',0,'123456789',1),('chaos.wizard@gmail.com','Phương Anh','$2b$10$eXQC39m41ZigUbuKaU0Fve5e4JpiCV3eQlrd/zM4A8XmlVgPdpjaO','48 Thoai Ngoc Hau',0,'0123456789',1),('chaos@gmail.com','admin02','$2b$10$0ZzHTZmMTsncmkmOZzCmhOSUGB5l01VHZ8skCpKJhfha9BM9hJT.u','51 duong 6',0,'123456789',1),('tranvietmar15@gmail.com','admin4','$2b$10$8Umc1R204rx8nCnOG8uXveC2GGY6QVNs7Wp7MlddXLsDtcmYC3GWy','48 bui thi xuan',1,'000000',0);
+INSERT INTO `users` VALUES ('chao@gmail.com','phuonga','$2b$10$aQOj4fC2OxzZKvEohduZHu1DG.2.m5eeJKb0stg1BTb5EuYsifazm','alsdsnahl',0,'1234567890',1),('chaos.15@gmail.com','phuonganh','$2b$10$fX41ERi.Qze1QCgeE8mOieT5Ml.GY6xXky7CE218Ldi3MOI3FZI9K','51 duong 6',0,'123456789',1),('chaos.wizard.15@gmail.com','admin02','$2b$10$TrADd/DV2fnX/IS5oRawOOGkrXk2jbm9LoVbku1Sxvd1PBOK0kq12','51 duong 6',0,'123456789',1),('chaos.wizard@gmail.com','Phương Anh','$2b$10$eXQC39m41ZigUbuKaU0Fve5e4JpiCV3eQlrd/zM4A8XmlVgPdpjaO','48 Thoai Ngoc Hau',0,'0123456789',1),('chaos@gmail.com','admin02','$2b$10$0ZzHTZmMTsncmkmOZzCmhOSUGB5l01VHZ8skCpKJhfha9BM9hJT.u','51 duong 6',0,'123456789',1),('tranvietmar15@gmail.com','admin4','$2b$10$gQ5xOIel1PWUhor0sVUmSe1QacqGFRBTWQEvSqdhPS4XKTUfMLr6C','48 bui thi xuan',1,'000000',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -146,4 +146,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-07 23:23:42
+-- Dump completed on 2021-12-08 18:13:50
