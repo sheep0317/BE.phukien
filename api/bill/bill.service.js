@@ -80,7 +80,7 @@ module.exports = {
     },
     getBillByCustomerEmail: (email, callBack) => {
         pool.query(
-            `SELECT * FROM bill WHERE email = ?`,
+            ` SELECT DISTINCT bill_id FROM bill where  email = ?`,
             [
                 email
             ],

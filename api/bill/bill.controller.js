@@ -232,32 +232,39 @@ module.exports = {
                     message: "Internal server error"
                 })
             } else {
-                console.log(results)
-                var bill = []
-                results.forEach(element => {
-                    bill.push({
-                        id: element.bill_id,
-                        email: element.email,
-                        createDate: element.create_date,
-                        paidDate: element.paid_date,
-                        products: []
-                    })
-                })
-                results.forEach(element => {
-                    bill.forEach(element2 => {
-                        if (element.bill_id == element2.id) {
-                            element2.products.push({
-                                product_id: element.product_id,
-                                product_name: element.product_name,
-                                product_quantity: element.product_quantity,
-                                total: element.total
+                var allOfBill = [];
+                results.forEach(result => {
+                    getBillById(result.bill_id, (err, kq) => {
+                        if (err) {
+                            res.status(500).send({
+                                message: "Internal server error"
+                            })
+                        } else {
+                            console.log(kq)
+                            var bill = {
+                                id: kq[0].bill_id,
+                                email: kq[0].email,
+                                createDate: kq[0].create_date,
+                                paidDate: kq[0].paid_date,
+                                products: []
+                            }
+                            kq.forEach(element => {
+                                bill.products.push({
+                                    product_id: element.product_id,
+                                    product_name: element.product_name,
+                                    product_quantity: element.product_quantity,
+                                    total: element.total
+                                })
+                            })
+                            allOfBill.push(bill)
+                        }
+                        if (allOfBill.length == results.length) {
+                            res.status(200).json({
+                                message: "Get all bill successfully",
+                                data: allOfBill
                             })
                         }
                     })
-                })
-                res.status(200).json({
-                    message: "Get bill successfully",
-                    data: bill
                 })
             }
         })
